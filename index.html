@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeOS - سیستم عامل زندگی هوشمند</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#1e293b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LifeOS">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiMxZTI5M2IiLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZjFmNWY5Ij4KPHA+8J+agDwvcD4KPC9zdmc+Cjwvc3ZnPgo=">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiMxZTI5M2IiLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZjFmNWY5Ij4KPHA+8J+agDwvcD4KPC9zdmc+Cjwvc3ZnPgo=">
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            min-height: 100vh;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+        
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        
+        .card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-1px);
+        }
+        
+        .input {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #f1f5f9;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .input::placeholder {
+            color: rgba(241, 245, 249, 0.5);
+        }
+        
+        .nav-item {
+            padding: 12px 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(241, 245, 249, 0.7);
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+        
+        .bottom-nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            color: rgba(241, 245, 249, 0.6);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .bottom-nav-item.active {
+            color: #3b82f6;
+        }
+        
+        .list-item {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            cursor: grab;
+        }
+        
+        .list-item:hover {
+            background: rgba(30, 41, 59, 0.8);
+            transform: translateX(4px);
+        }
+        
+        .list-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+        
+        .priority-high {
+            border-left: 4px solid #ef4444;
+        }
+        
+        .priority-medium {
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .priority-low {
+            border-left: 4px solid #10b981;
+        }
+        
+        .progress-bar {
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 8px;
+            height: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            border-radius: 8px;
+            transition: width 0.5s ease;
+        }
+        
+        .mood-selector {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .mood-item {
+            font-size: 2rem;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(30, 41, 59, 0.5);
+        }
+        
+        .mood-item:hover, .mood-item.active {
+            transform: scale(1.2);
+            background: rgba(59, 130, 246, 0.3);
+        }
+        
+        .breathing-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: transform 4s ease-in-out;
+        }
+        
+        .breathing-circle.inhale {
+            transform: scale(1.3);
+        }
+        
+        .breathing-circle.exhale {
+            transform: scale(0.8);
+        }
+        
+        .pomodoro-timer {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            color: #3b82f6;
+            margin: 20px 0;
+        }
+        
+        .level-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .xp-bar {
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .xp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .language-selector {
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 12px;
+            padding: 12px;
+        }
+        
+        .language-option {
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .language-option.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .tribe-member {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .tribe-member img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .online-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #10b981;
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            border: 2px solid #1e293b;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 8px 16px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #3b82f6;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .hidden { display: none !important; }
+        
+        /* Infinite Scroll */
+        .infinite-scroll {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .scroll-item {
+            padding: 16px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* RTL Support */
+        [dir="rtl"] .list-item:hover {
+            transform: translateX(-4px);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .card {
+                padding: 16px;
+            }
+            
+            .pomodoro-timer {
+                font-size: 2rem;
+            }
+            
+            .breathing-circle {
+                width: 150px;
+                height: 150px;
+            }
+        }
+        
+        /* PWA Install Button */
+        .install-prompt {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.3);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.5);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <!-- PWA Install Prompt -->
+    <div id="installPrompt" class="install-prompt">
+        <div class="flex items-center justify-between">
+            <div>
+                <h3 class="font-bold mb-1" data-translate="install_app_title">نصب LifeOS</h3>
+                <p class="text-sm opacity-90" data-translate="install_app_desc">برای دسترسی آسان‌تر نصب کنید</p>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="dismissInstallPrompt()" class="px-3 py-1 text-sm opacity-70 hover:opacity-100">
+                    <span data-translate="later">بعداً</span>
+                </button>
+                <button onclick="installPWA()" class="px-4 py-2 bg-white/20 rounded-lg text-sm font-medium">
+                    <span data-translate="install">نصب</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Selector (Top Right) -->
+    <div class="fixed top-4 right-4 z-50">
+        <div class="relative">
+            <button id="languageToggle" class="language-option active" onclick="toggleLanguageSelector()">
+                <span id="currentLanguageFlag">🇮🇷</span>
+                <span id="currentLanguageName">فارسی</span>
+                <span>▼</span>
+            </button>
+            <div id="languageSelector" class="hidden absolute top-full right-0 mt-2 language-selector w-64">
+                <!-- Languages will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Page -->
+    <div id="registration" class="min-h-screen flex items-center justify-center p-4">
+        <div class="card max-w-md w-full text-center fade-in">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold mb-2" data-translate="welcome_to_lifeos">به LifeOS خوش آمدید!</h1>
+                <p class="text-white-70" data-translate="registration_subtitle">برای شروع، لطفاً اطلاعات خود را وارد کنید</p>
+                <div class="mt-4 text-sm text-white-50">
+                    <span data-translate="total_users">تعداد کاربران عضو:</span>
+                    <span id="totalUsers" class="font-bold text-blue-400">12,847</span>
+                    <span data-translate="users_joined">نفر! 🎉</span>
+                </div>
+            </div>
+            
+            <!-- Profile Picture Upload -->
+            <div class="mb-6">
+                <div class="relative inline-block">
+                    <img id="profilePreview" 
+                         src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjYwIiBmaWxsPSIjMzM0MTU1Ii8+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNDUiIHI9IjIwIiBmaWxsPSIjNjM3NGE0Ii8+CjxwYXRoIGQ9Ik0yMCA5NUMyMCA4MCA0MCA2NSA2MCA2NVM5MCA4MCA5MCA5NSIgZmlsbD0iIzYzNzRhNCIvPgo8L3N2Zz4K" 
+                         class="w-24 h-24 rounded-full object-cover border-4 border-blue-500/30 cursor-pointer transition-all hover:border-blue-500 hover:scale-105" 
+                         alt="Profile Picture">
+                    <input type="file" id="profilePictureInput" accept="image/*" class="hidden" onchange="handleProfilePicture(event)">
+                    <button type="button" onclick="document.getElementById('profilePictureInput').click()" 
+                            class="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-all">
+                        📷
+                    </button>
+                </div>
+                <p class="text-sm text-white-50 mt-2" data-translate="profile_picture_hint">روی تصویر کلیک کنید تا عکس پروفایل انتخاب کنید</p>
+            </div>
+            
+            <!-- Registration Form -->
+            <div class="space-y-4">
+                <input type="text" id="userName" class="input" data-translate-placeholder="name_placeholder" placeholder="نام شما...">
+                <input type="email" id="userEmail" class="input" data-translate-placeholder="email_placeholder" placeholder="ایمیل (اختیاری)...">
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2" data-translate="select_goal">هدف اصلی شما چیست؟</label>
+                    <select id="userGoal" class="input">
+                        <option value="productivity" data-translate="goal_productivity">افزایش بهره‌وری</option>
+                        <option value="habits" data-translate="goal_habits">ایجاد عادت‌های مثبت</option>
+                        <option value="organization" data-translate="goal_organization">سازماندهی زندگی</option>
+                        <option value="learning" data-translate="goal_learning">یادگیری و مطالعه</option>
+                        <option value="health" data-translate="goal_health">سلامت و تناسب اندام</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2" data-translate="assistant_tone">لحن دستیار هوشمند:</label>
+                    <select id="assistantTone" class="input">
+                        <option value="friendly" data-translate="tone_friendly">دوستانه</option>
+                        <option value="formal" data-translate="tone_formal">رسمی</option>
+                        <option value="funny" data-translate="tone_funny">شوخ</option>
+                        <option value="calm" data-translate="tone_calm">آرام</option>
+                    </select>
+                </div>
+                
+                <button onclick="registerUser()" class="btn btn-primary w-full" data-translate="start_button">🚀 شروع کنید</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="mainApp" class="hidden">
+        <!-- Header -->
+        <header class="glass border-b border-white/10 p-4">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="text-2xl">🧠</div>
+                    <div>
+                        <h1 class="text-xl font-bold" data-translate="app_name">LifeOS</h1>
+                        <p class="text-sm text-white-70" data-translate="app_subtitle">سیستم عامل زندگی هوشمند</p>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-6">
+                    <!-- User Level & XP -->
+                    <div class="flex items-center gap-3">
+                        <div class="level-badge" id="userLevel">سطح 1</div>
+                        <div class="text-right">
+                            <div class="text-sm text-white-70">XP: <span id="userXP">0</span>/100</div>
+                            <div class="xp-bar w-20">
+                                <div id="xpFill" class="xp-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-right">
+                        <div id="currentTime" class="text-lg font-bold">--:--</div>
+                        <div id="currentDate" class="text-sm text-white-70">--</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:block glass border-b border-white/10">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex items-center gap-2 overflow-x-auto">
+                    <div class="nav-item active" onclick="showHome()">
+                        <span>🏠</span>
+                        <span data-translate="nav_home">خانه</span>
+                    </div>
+                    <div class="nav-item" onclick="showTasks()">
+                        <span>📝</span>
+                        <span data-translate="nav_tasks">وظایف</span>
+                    </div>
+                    <div class="nav-item" onclick="showMood()">
+                        <span>😊</span>
+                        <span data-translate="nav_mood">احساسات</span>
+                    </div>
+                    <div class="nav-item" onclick="showGoals()">
+                        <span>🎯</span>
+                        <span data-translate="nav_goals">اهداف</span>
+                    </div>
+                    <div class="nav-item" onclick="showCalm()">
+                        <span>🧘</span>
+                        <span data-translate="nav_calm">آرامش</span>
+                    </div>
+                    <div class="nav-item" onclick="showPomodoro()">
+                        <span>⏰</span>
+                        <span data-translate="nav_pomodoro">تایمر</span>
+                    </div>
+                    <div class="nav-item" onclick="showTribe()">
+                        <span>👥</span>
+                        <span data-translate="nav_tribe">قبیله</span>
+                    </div>
+                    <div class="nav-item" onclick="showChat()">
+                        <span>🤖</span>
+                        <span data-translate="nav_chat">چت‌بات</span>
+                    </div>
+                    <div class="nav-item" onclick="showSettings()">
+                        <span>⚙️</span>
+                        <span data-translate="nav_settings">تنظیمات</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto p-4 pb-20 md:pb-4">
+            <!-- Home Page -->
+            <div id="home" class="space-y-6">
+                <!-- Welcome Section -->
+                <div class="card text-center">
+                    <h2 id="welcomeMessage" class="text-2xl font-bold mb-2" data-translate="welcome_title">سلام! به LifeOS خوش آمدید</h2>
+                    <p id="motivationalQuote" class="text-white-80" data-translate="motivational_quote">هر روز فرصت جدیدی برای شروع دوباره است! 💪</p>
+                    
+                    <!-- Daily Card -->
+                    <div class="mt-6 p-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg">
+                        <h3 class="font-bold mb-2" data-translate="daily_card">کارت روز</h3>
+                        <p id="dailyQuote" class="text-sm text-white-80 mb-2">--</p>
+                        <p id="dailyTask" class="text-sm text-blue-300">--</p>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="card text-center">
+                        <div class="text-2xl font-bold text-blue-400" id="taskCount">0</div>
+                        <div class="text-sm text-white-70 mb-2" data-translate="stats_tasks">وظایف</div>
+                        <div class="progress-bar">
+                            <div id="taskProgress" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card text-center">
+                        <div class="text-2xl font-bold text-green-400" id="moodScore">😊</div>
+                        <div class="text-sm text-white-70 mb-2" data-translate="stats_mood">حالت امروز</div>
+                        <div class="progress-bar">
+                            <div id="moodProgress" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card text-center">
+                        <div class="text-2xl font-bold text-purple-400" id="goalCount">0</div>
+                        <div class="text-sm text-white-70 mb-2" data-translate="stats_goals">اهداف</div>
+                        <div class="progress-bar">
+                            <div id="goalProgress" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card text-center">
+                        <div class="text-2xl font-bold text-orange-400" id="productivity">0%</div>
+                        <div class="text-sm text-white-70 mb-2" data-translate="stats_productivity">بهره‌وری</div>
+                        <div class="progress-bar">
+                            <div id="productivityProgress" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Infinite Scroll Feed -->
+                <div class="card">
+                    <h3 class="text-lg font-bold mb-4" data-translate="inspiration_feed">🌟 فید الهام‌بخش</h3>
+                    <div id="inspirationFeed" class="infinite-scroll">
+                        <!-- Content will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <h3 class="text-lg font-bold mb-4" data-translate="quick_actions">🚀 دسترسی سریع</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <button onclick="showTasks()" class="btn btn-primary">📝 وظایف</button>
+                        <button onclick="showMood()" class="btn btn-primary">😊 احساسات</button>
+                        <button onclick="showCalm()" class="btn btn-primary">🧘 آرامش</button>
+                        <button onclick="showChat()" class="btn btn-primary">🤖 چت‌بات</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks Page -->
+            <div id="tasks" class="hidden space-y-6">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-6" data-translate="tasks_title">📝 مدیریت وظایف</h2>
+                    
+                    <!-- Task Filters -->
+                    <div class="flex gap-2 mb-6">
+                        <button onclick="filterTasks('all')" class="btn btn-primary" data-translate="filter_all">همه</button>
+                        <button onclick="filterTasks('pending')" class="btn btn-primary" data-translate="filter_pending">در انتظار</button>
+                        <button onclick="filterTasks('completed')" class="btn btn-primary" data-translate="filter_completed">تکمیل شده</button>
+                        <button onclick="filterTasks('high')" class="btn btn-primary" data-translate="filter_high">اولویت بالا</button>
+                    </div>
+                    
+                    <!-- Add Task Form -->
+                    <div class="flex gap-3 mb-6">
+                        <input type="text" id="taskInput" class="input flex-1" data-translate-placeholder="task_placeholder" placeholder="وظیفه جدید اضافه کنید...">
+                        <select id="taskPriority" class="input">
+                            <option value="low" data-translate="priority_low">کم</option>
+                            <option value="medium" data-translate="priority_medium">متوسط</option>
+                            <option value="high" data-translate="priority_high">بالا</option>
+                        </select>
+                        <input type="datetime-local" id="taskDeadline" class="input">
+                        <button onclick="addTask()" class="btn btn-success" data-translate="add_button">اضافه کردن</button>
+                    </div>
+                    
+                    <!-- Task List (Sortable) -->
+                    <div id="taskList" class="sortable-list"></div>
+                </div>
+            </div>
+
+            <!-- Mood & Journal Page -->
+            <div id="mood" class="hidden space-y-6">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-6" data-translate="mood_title">😊 احساسات و ژورنال</h2>
+                    
+                    <!-- Mood Selector -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold mb-4" data-translate="how_feeling">امروز چطوری احساس می‌کنی؟</h3>
+                        <div class="mood-selector">
+                            <div class="mood-item" data-mood="very-happy" onclick="selectMood('very-happy', '😄')">😄</div>
+                            <div class="mood-item" data-mood="happy" onclick="selectMood('happy', '😊')">😊</div>
+                            <div class="mood-item" data-mood="neutral" onclick="selectMood('neutral', '😐')">😐</div>
+                            <div class="mood-item" data-mood="sad" onclick="selectMood('sad', '😞')">😞</div>
+                            <div class="mood-item" data-mood="angry" onclick="selectMood('angry', '😡')">😡</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Journal Entry -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold mb-4" data-translate="daily_journal">یادداشت روزانه</h3>
+                        <textarea id="journalEntry" class="input min-h-[120px] resize-none" data-translate-placeholder="journal_placeholder" placeholder="امروز چه اتفاقی افتاد؟ احساساتت رو بنویس..."></textarea>
+                        <button onclick="saveJournalEntry()" class="btn btn-success mt-3" data-translate="save_journal">ذخیره یادداشت</button>
+                    </div>
+                    
+                    <!-- Mood Chart -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold mb-4" data-translate="mood_chart">نمودار احساسات هفتگی</h3>
+                        <canvas id="moodChart" width="400" height="200"></canvas>
+                    </div>
+                    
+                    <!-- Journal History -->
+                    <div>
+                        <h3 class="text-lg font-bold mb-4" data-translate="journal_history">تاریخچه یادداشت‌ها</h3>
+                        <div id="journalHistory" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goals Page -->
+            <div id="goals" class="hidden space-y-6">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-6" data-translate="goals_title">🎯 هدف‌گذاری و انگیزه</h2>
+                    
+                    <!-- Add Goal Form -->
+                    <div class="space-y-4 mb-6">
+                        <input type="text" id="goalTitle" class="input" data-translate-placeholder="goal_title_placeholder" placeholder="عنوان هدف...">
+                        <textarea id="goalDescription" class="input min-h-[80px] resize-none" data-translate-placeholder="goal_description_placeholder" placeholder="توضیحات هدف..."></textarea>
+                        <div class="flex gap-3">
+                            <select id="goalType" class="input flex-1">
+                                <option value="short" data-translate="goal_short">کوتاه‌مدت</option>
+                                <option value="long" data-translate="goal_long">بلندمدت</option>
+                            </select>
+                            <input type="date" id="goalDeadline" class="input flex-1">
+                            <button onclick="addGoal()" class="btn btn-success" data-translate="add_goal">اضافه کردن هدف</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Goals List -->
+                    <div id="goalsList"></div>
+                </div>
+            </div>
+
+            <!-- Calm Center Page -->
+            <div id="calm" class="hidden space-y-6">
+                <div class="card text-center">
+                    <h2 class="text-2xl font-bold mb-6" data-translate="calm_title">🧘 مرکز آرامش</h2>
+                    
+                    <!-- Breathing Exercise -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-bold mb-4" data-translate="breathing_exercise">تمرین تنفس</h3>
+                        <div id="breathingCircle" class="breathing-circle mx-auto mb-4">
+                            <span id="breathingText" data-translate="breathe">نفس بکش</span>
+                        </div>
+                        <button id="breathingButton" onclick="startBreathing()" class="btn btn-primary" data-translate="start_breathing">شروع تمرین</button>
+                    </div>
+                    
+                    <!-- Nature Sounds -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-bold mb-4" data-translate="nature_sounds">صداهای طبیعت</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <button onclick="playNatureSound('rain')" class="btn btn-primary">🌧️ باران</button>
+                            <button onclick="playNatureSound('ocean')" class="btn btn-primary">🌊 اقیانوس</button>
+                            <button onclick="playNatureSound('forest')" class="btn btn-primary">🌲 جنگل</button>
+                            <button onclick="playNatureSound('birds')" class="btn btn-primary">🐦 پرندگان</button>
+                        </div>
+                        <button id="stopSounds" onclick="stopNatureSounds()" class="btn bg-red-500 hover:bg-red-600 text-white mt-3 hidden" data-translate="stop_sounds">توقف صدا</button>
+                    </div>
+                    
+                    <!-- Meditation -->
+                    <div>
+                        <h3 class="text-lg font-bold mb-4" data-translate="meditation">مدیتیشن هدایت‌شده</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <button onclick="startMeditation(5)" class="btn btn-primary">5 دقیقه</button>
+                            <button onclick="startMeditation(10)" class="btn btn-primary">10 دقیقه</button>
+                            <button onclick="startMeditation(15)" class="btn btn-primary">15 دقیقه</button>
+                        </div>
+                        <div id="meditationTimer" class="hidden mt-4">
+                            <div class="text-3xl font-bold text-blue-400" id="meditationTime">05:00</div>
+                            <button onclick="stopMeditation()" class="btn bg-red-500 hover:bg-red-600 text-white mt-2" data-translate="stop_meditation">توقف مدیتیشن</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pomodoro Timer Page -->
+            <div id="pomodoro" class="hidden space-y-6">
+                <div class="card text-center">
+                    <h2 class="text-2xl font-bold mb-6" data-translate="pomodoro_title">⏰ تایمر تمرکز</h2>
+                    
+                    <!-- Timer Display -->
+                    <div class="pomodoro-timer" id="pomodoroDisplay">25:00</div>
+                    
+                    <!-- Timer Controls -->
+                    <div class="flex justify-center gap-4 mb-6">
+                        <button id="startPomodoro" onclick="startPomodoro()" class="btn btn-success" data-translate="start_timer">شروع</button>
+                        <button id="pausePomodoro" onclick="pausePomodoro()" class="btn btn-primary hidden" data-translate="pause_timer">توقف</button>
+                        <button id="resetPomodoro" onclick="resetPomodoro()" class="btn bg-red-500 hover:bg-red-600 text-white" data-translate="reset_timer">ریست</button>
+                    </div>
+                    
+                    <!-- Timer Settings -->
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2" data-translate="work_time">زمان کار (دقیقه)</label>
+                            <input type="number" id="workTime" value="25" min="1" max="60" class="input text-center">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2" data-translate="short_break">استراحت کوتاه (دقیقه)</label>
+                            <input type="number" id="shortBreak" value="5" min="1" max="15" class="input text-center">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2" data-translate="long_break">استراحت طولانی (دقیقه)</label>
+                            <input type="number" id="longBreak" value="15" min="10" max="30" class="input text-center">
+                        </div>
+                    </div>
+                    
+                    <!-- Pomodoro Stats -->
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="card">
+                            <div class="text-2xl font-bold text-green-400" id="completedPomodoros">0</div>
+                            <div class="text-sm text-white-70" data-translate="completed_sessions">جلسات تکمیل شده</div>
+                        </div>
+                        <div class="card">
+                            <div class="text-2xl font-bold text-blue-400" id="totalFocusTime">0</div>
+                            <div class="text-sm text-white-70" data-translate="total_focus_time">کل زمان تمرکز (دقیقه)</div>
+                        </div>
+                        <div class="card">
+                            <div class="text-2xl font-bold text-purple-400" id="currentStreak">0</div>
+                            <div class="text-sm text-white-70" data-translate="current_streak">رکورد فعلی</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tribe Page -->
+            <div id="tribe" class="hidden space-y-6">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-6" data-translate="tribe_title">👥 قبیله من</h2>
+                    
+                    <!-- Tribe Stats -->
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="card text-center">
+                            <div class="text-2xl font-bold text-blue-400" id="tribeMembers">0</div>
+                            <div class="text-sm text-white-70" data-translate="tribe_members">اعضای قبیله</div>
+                        </div>
+                        <div class="card text-center">
+                            <div class="text-2xl font-bold text-green-400" id="onlineMembers">0</div>
+                            <div class="text-sm text-white-70" data-translate="online_members">آنلاین</div>
+                        </div>
+                        <div class="card text-center">
+                            <div class="text-2xl font-bold text-purple-400" id="tribeLevel">1</div>
+                            <div class="text-sm text-white-70" data-translate="tribe_level">سطح قبیله</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Join/Create Tribe -->
+                    <div class="mb-6">
+                        <div class="flex gap-3">
+                            <input type="text" id="tribeCode" class="input flex-1" data-translate-placeholder="tribe_code_placeholder" placeholder="کد قبیله را وارد کنید...">
+                            <button onclick="joinTribe()" class="btn btn-primary" data-translate="join_tribe">پیوستن</button>
+                            <button onclick="createTribe()" class="btn btn-success" data-translate="create_tribe">ایجاد قبیله</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Tribe Members -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold mb-4" data-translate="tribe_members_list">اعضای قبیله</h3>
+                        <div id="tribeMembersList"></div>
+                    </div>
+                    
+                    <!-- Tribe Chat -->
+                    <div>
+                        <h3 class="text-lg font-bold mb-4" data-translate="tribe_chat">چت قبیله</h3>
+                        <div id="tribeChatMessages" class="space-y-3 mb-4 max-h-64 overflow-y-auto"></div>
+                        <div class="flex gap-3">
+                            <input type="text" id="tribeChatInput" class="input flex-1" data-translate-placeholder="tribe_message_placeholder" placeholder="پیام خود را بنویسید...">
+                            <button onclick="sendTribeMessage()" class="btn btn-primary" data-translate="send_message">ارسال</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Page -->
+            <div id="chat" class="hidden space-y-6">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-6" data-translate="chat_title">🤖 دستیار هوشمند</h2>
+                    
+                    <!-- Assistant Settings -->
+                    <div class="mb-4 flex gap-3">
+                        <select id="assistantToneSelector" class="input" onchange="changeAssistantTone()">
+                            <option value="friendly" data-translate="tone_friendly">دوستانه</option>
+                            <option value="formal" data-translate="tone_formal">رسمی</option>
+                            <option value="funny" data-translate="tone_funny">شوخ</option>
+                            <option value="calm" data-translate="tone_calm">آرام</option>
+                        </select>
+                        <button onclick="clearChatHistory()" class="btn bg-red-500 hover:bg-red-600 text-white" data-translate="clear_chat">پاک کردن چت</button>
+                    </div>
+                    
+                    <!-- Chat Messages -->
+                    <div id="chatMessages" class="space-y-4 mb-6 max-h-96 overflow-y-auto"></div>
+                    
+                    <!-- Typing Indicator -->
+                    <div id="typingIndicator" class="hidden">
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Input -->
+                    <div class="flex gap-3">
+                        <input type="text" id="chatInput" class="input flex-1" data-translate-placeholder="chat_placeholder" placeholder="پیام خود را بنویسید...">
+                        <button onclick="sendMessage()" class="btn btn-primary" data-translate="send_button">ارسال</button>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="mt-4">
+                        <h4 class="text-sm font-medium mb-2" data-translate="quick_questions">سوالات سریع:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="askQuickQuestion('stats')" class="btn bg-gray-600 hover:bg-gray-500 text-white text-sm">📊 آمار من</button>
+                            <button onclick="askQuickQuestion('motivation')" class="btn bg-gray-600 hover:bg-gray-500 text-white text-sm">💪 انگیزه</button>
+                            <button onclick="askQuickQuestion('tips')" class="btn bg-gray-600 hover:bg-gray-500 text-white text-sm">💡 نکته</button>
+                            <button onclick="askQuickQuestion('plan')" class="btn bg-gray-600 hover:bg-gray-500 text-white text-sm">📅 برنامه‌ریزی</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings" class="hidden space-y-6">
+                <div class="card">
+                    <h2 class="text-2xl font-bold mb-6" data-translate="settings_title">⚙️ تنظیمات</h2>
+                    
+                    <!-- User Profile Section -->
+                    <div id="userProfileSection" class="mb-8" style="display: none;">
+                        <h3 class="text-lg font-bold mb-4" data-translate="user_profile">👤 پروفایل کاربری</h3>
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="relative">
+                                <img id="settingsProfilePicture" 
+                                     src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNDAiIGZpbGw9IiMzMzQxNTUiLz4KPGNpcmNsZSBjeD0iNDAiIGN5PSIzMCIgcj0iMTUiIGZpbGw9IiM2Mzc0YTQiLz4KPHA+dGggZD0iTTE1IDYwQzE1IDUwIDI1IDQwIDQwIDQwUzY1IDUwIDY1IDYwIiBmaWxsPSIjNjM3NGE0Ii8+Cjwvc3ZnPgo=" 
+                                     class="w-20 h-20 rounded-full object-cover border-3 border-blue-500/30 cursor-pointer transition-all hover:border-blue-500" 
+                                     alt="Profile Picture">
+                                <input type="file" id="settingsProfileInput" accept="image/*" class="hidden" onchange="updateProfilePicture(event)">
+                                <button type="button" onclick="document.getElementById('settingsProfileInput').click()" 
+                                        class="absolute bottom-0 right-0 bg-blue-500 text-white p-1 rounded-full hover:bg-blue-600 transition-all text-xs">
+                                    📷
+                                </button>
+                            </div>
+                            <div class="flex-1">
+                                <div class="mb-2">
+                                    <span class="text-sm text-white-70" data-translate="name_label">نام:</span>
+                                    <span id="displayUserName" class="font-medium mr-2">--</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="text-sm text-white-70" data-translate="email_label">ایمیل:</span>
+                                    <span id="displayUserEmail" class="font-medium mr-2">--</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="text-sm text-white-70" data-translate="goal_label">هدف:</span>
+                                    <span id="displayUserGoal" class="font-medium mr-2">--</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="text-sm text-white-70" data-translate="level_label">سطح:</span>
+                                    <span id="displayUserLevel" class="font-medium mr-2">--</span>
+                                </div>
+                                <button onclick="editProfile()" class="btn btn-primary text-sm mt-2" data-translate="edit_profile">✏️ ویرایش پروفایل</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Language Settings -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold mb-2" data-translate="language_setting">زبان برنامه</h3>
+                        <p class="text-sm text-white-70 mb-3" data-translate="language_description">انتخاب زبان رابط کاربری</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2" id="languageGrid">
+                            <!-- Popular languages will be shown here -->
+                        </div>
+                        <button onclick="showAllLanguages()" class="btn btn-primary mt-3" data-translate="show_all_languages">نمایش همه زبان‌ها</button>
+                    </div>
+                    
+                    <!-- Theme Settings -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold mb-2" data-translate="theme_settings">تنظیمات ظاهری</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2" data-translate="dark_theme">تم تاریک</label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" id="darkThemeToggle" checked class="w-5 h-5">
+                                    <span>فعال</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2" data-translate="glass_effect">افکت شیشه‌ای</label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" id="glassEffectToggle" checked class="w-5 h-5">
+                                    <span>فعال</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notification Settings -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold mb-2" data-translate="notifications">اعلان‌ها</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="taskNotifications" checked class="w-5 h-5">
+                                <span data-translate="task_notifications">اعلان وظایف</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="pomodoroNotifications" checked class="w-5 h-5">
+                                <span data-translate="pomodoro_notifications">اعلان پومودورو</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="motivationalNotifications" checked class="w-5 h-5">
+                                <span data-translate="motivational_notifications">پیام‌های انگیزشی</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Data Management -->
+                    <div class="space-y-3">
+                        <button onclick="exportData()" class="btn btn-primary w-full" data-translate="export_data">📤 خروجی داده‌ها</button>
+                        <button onclick="importData()" class="btn btn-primary w-full" data-translate="import_data">📥 ورودی داده‌ها</button>
+                        <button onclick="syncWithCloud()" class="btn btn-primary w-full" data-translate="sync_cloud">☁️ همگام‌سازی ابری</button>
+                        <button onclick="clearAllData()" class="btn bg-red-500 hover:bg-red-600 text-white w-full" data-translate="clear_data">🗑️ پاک کردن همه</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Mobile Bottom Navigation -->
+        <nav class="md:hidden fixed bottom-0 left-0 right-0 glass border-t border-white/10">
+            <div class="flex overflow-x-auto">
+                <div class="bottom-nav-item active" onclick="showHome()">
+                    <span class="text-xl">🏠</span>
+                    <span class="text-xs" data-translate="nav_home">خانه</span>
+                </div>
+                <div class="bottom-nav-item" onclick="showTasks()">
+                    <span class="text-xl">📝</span>
+                    <span class="text-xs" data-translate="nav_tasks">وظایف</span>
+                </div>
+                <div class="bottom-nav-item" onclick="showMood()">
+                    <span class="text-xl">😊</span>
+                    <span class="text-xs" data-translate="nav_mood">احساسات</span>
+                </div>
+                <div class="bottom-nav-item" onclick="showCalm()">
+                    <span class="text-xl">🧘</span>
+                    <span class="text-xs" data-translate="nav_calm">آرامش</span>
+                </div>
+                <div class="bottom-nav-item" onclick="showTribe()">
+                    <span class="text-xl">👥</span>
+                    <span class="text-xs" data-translate="nav_tribe">قبیله</span>
+                </div>
+                <div class="bottom-nav-item" onclick="showChat()">
+                    <span class="text-xl">🤖</span>
+                    <span class="text-xs" data-translate="nav_chat">چت‌بات</span>
+                </div>
+                <div class="bottom-nav-item" onclick="showSettings()">
+                    <span class="text-xl">⚙️</span>
+                    <span class="text-xs" data-translate="nav_settings">تنظیمات</span>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Hidden File Input for Import -->
+    <input type="file" id="fileInput" accept=".json" class="hidden" onchange="handleFileImport(event)">
+
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <script>
+        // Navigation Functions for App Sections
+        function showHome() {
+            hideAllSections();
+            document.getElementById('home').classList.remove('hidden');
+            updateActiveNav('home');
+        }
+
+        function showTasks() {
+            hideAllSections();
+            document.getElementById('tasks').classList.remove('hidden');
+            updateActiveNav('tasks');
+        }
+
+        function showMood() {
+            hideAllSections();
+            document.getElementById('mood').classList.remove('hidden');
+            updateActiveNav('mood');
+        }
+
+        function showGoals() {
+            hideAllSections();
+            document.getElementById('goals').classList.remove('hidden');
+            updateActiveNav('goals');
+        }
+
+        function showCalm() {
+            hideAllSections();
+            document.getElementById('calm').classList.remove('hidden');
+            updateActiveNav('calm');
+        }
+
+        function showPomodoro() {
+            hideAllSections();
+            document.getElementById('pomodoro').classList.remove('hidden');
+            updateActiveNav('pomodoro');
+        }
+
+        function showTribe() {
+            hideAllSections();
+            document.getElementById('tribe').classList.remove('hidden');
+            updateActiveNav('tribe');
+        }
+
+        function showChat() {
+            hideAllSections();
+            document.getElementById('chat').classList.remove('hidden');
+            updateActiveNav('chat');
+        }
+
+        function showSettings() {
+            hideAllSections();
+            document.getElementById('settings').classList.remove('hidden');
+            updateActiveNav('settings');
+            if (lifeOS) {
+                lifeOS.loadSettingsData();
+            }
+        }
+
+        function hideAllSections() {
+            const sections = ['home', 'tasks', 'mood', 'goals', 'calm', 'pomodoro', 'tribe', 'chat', 'settings'];
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    element.classList.add('hidden');
+                }
+            });
+        }
+
+        function updateActiveNav(activeSection) {
+            // Update desktop nav
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Update mobile nav
+            document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to current section
+            const navItems = document.querySelectorAll(`[onclick="show${activeSection.charAt(0).toUpperCase() + activeSection.slice(1)}()"]`);
+            navItems.forEach(item => {
+                item.classList.add('active');
+            });
+        }
+    </script>
+
+    <script>
+        // Global Variables
+        let lifeOS;
+        let currentLanguage = localStorage.getItem('lifeos_language') || 'fa';
+        let deferredPrompt;
+        let installPromptShown = localStorage.getItem('lifeos_install_prompt_shown') === 'true';
+
+        // World Languages Database
+        const worldLanguages = {
+            // Popular Languages
+            'fa': { name: 'فارسی', flag: '🇮🇷', popular: true },
+            'en': { name: 'English', flag: '🇺🇸', popular: true },
+            'ar': { name: 'العربية', flag: '🇸🇦', popular: true },
+            'zh': { name: '中文', flag: '🇨🇳', popular: true },
+            'es': { name: 'Español', flag: '🇪🇸', popular: true },
+            'fr': { name: 'Français', flag: '🇫🇷', popular: true },
+            'de': { name: 'Deutsch', flag: '🇩🇪', popular: true },
+            'ru': { name: 'Русский', flag: '🇷🇺', popular: true },
+            'ja': { name: '日本語', flag: '🇯🇵', popular: true },
+            'ko': { name: '한국어', flag: '🇰🇷', popular: true },
+            'hi': { name: 'हिन्दी', flag: '🇮🇳', popular: true },
+            'pt': { name: 'Português', flag: '🇧🇷', popular: true },
+            
+            // All Other Languages
+            'af': { name: 'Afrikaans', flag: '🇿🇦' },
+            'sq': { name: 'Shqip', flag: '🇦🇱' },
+            'am': { name: 'አማርኛ', flag: '🇪🇹' },
+            'hy': { name: 'Հայերեն', flag: '🇦🇲' },
+            'az': { name: 'Azərbaycan', flag: '🇦🇿' },
+            'eu': { name: 'Euskera', flag: '🏴' },
+            'be': { name: 'Беларуская', flag: '🇧🇾' },
+            'bn': { name: 'বাংলা', flag: '🇧🇩' },
+            'bs': { name: 'Bosanski', flag: '🇧🇦' },
+            'bg': { name: 'Български', flag: '🇧🇬' },
+            'ca': { name: 'Català', flag: '🏴' },
+            'ceb': { name: 'Cebuano', flag: '🇵🇭' },
+            'ny': { name: 'Chichewa', flag: '🇲🇼' },
+            'co': { name: 'Corsu', flag: '🇫🇷' },
+            'hr': { name: 'Hrvatski', flag: '🇭🇷' },
+            'cs': { name: 'Čeština', flag: '🇨🇿' },
+            'da': { name: 'Dansk', flag: '🇩🇰' },
+            'nl': { name: 'Nederlands', flag: '🇳🇱' },
+            'eo': { name: 'Esperanto', flag: '🌍' },
+            'et': { name: 'Eesti', flag: '🇪🇪' },
+            'tl': { name: 'Filipino', flag: '🇵🇭' },
+            'fi': { name: 'Suomi', flag: '🇫🇮' },
+            'fy': { name: 'Frysk', flag: '🇳🇱' },
+            'gl': { name: 'Galego', flag: '🏴' },
+            'ka': { name: 'ქართული', flag: '🇬🇪' },
+            'el': { name: 'Ελληνικά', flag: '🇬🇷' },
+            'gu': { name: 'ગુજરાતી', flag: '🇮🇳' },
+            'ht': { name: 'Kreyòl', flag: '🇭🇹' },
+            'ha': { name: 'Hausa', flag: '🇳🇬' },
+            'haw': { name: 'ʻŌlelo Hawaiʻi', flag: '🇺🇸' },
+            'he': { name: 'עברית', flag: '🇮🇱' },
+            'hu': { name: 'Magyar', flag: '🇭🇺' },
+            'is': { name: 'Íslenska', flag: '🇮🇸' },
+            'ig': { name: 'Igbo', flag: '🇳🇬' },
+            'id': { name: 'Bahasa Indonesia', flag: '🇮🇩' },
+            'ga': { name: 'Gaeilge', flag: '🇮🇪' },
+            'it': { name: 'Italiano', flag: '🇮🇹' },
+            'jw': { name: 'Basa Jawa', flag: '🇮🇩' },
+            'kn': { name: 'ಕನ್ನಡ', flag: '🇮🇳' },
+            'kk': { name: 'Қазақ', flag: '🇰🇿' },
+            'km': { name: 'ខ្មែរ', flag: '🇰🇭' },
+            'rw': { name: 'Kinyarwanda', flag: '🇷🇼' },
+            'ku': { name: 'Kurdî', flag: '🏴' },
+            'ky': { name: 'Кыргызча', flag: '🇰🇬' },
+            'lo': { name: 'ລາວ', flag: '🇱🇦' },
+            'la': { name: 'Latina', flag: '🏛️' },
+            'lv': { name: 'Latviešu', flag: '🇱🇻' },
+            'lt': { name: 'Lietuvių', flag: '🇱🇹' },
+            'lb': { name: 'Lëtzebuergesch', flag: '🇱🇺' },
+            'mk': { name: 'Македонски', flag: '🇲🇰' },
+            'mg': { name: 'Malagasy', flag: '🇲🇬' },
+            'ms': { name: 'Bahasa Melayu', flag: '🇲🇾' },
+            'ml': { name: 'മലയാളം', flag: '🇮🇳' },
+            'mt': { name: 'Malti', flag: '🇲🇹' },
+            'mi': { name: 'Te Reo Māori', flag: '🇳🇿' },
+            'mr': { name: 'मराठी', flag: '🇮🇳' },
+            'mn': { name: 'Монгол', flag: '🇲🇳' },
+            'my': { name: 'မြန်မာ', flag: '🇲🇲' },
+            'ne': { name: 'नेपाली', flag: '🇳🇵' },
+            'no': { name: 'Norsk', flag: '🇳🇴' },
+            'or': { name: 'ଓଡ଼ିଆ', flag: '🇮🇳' },
+            'ps': { name: 'پښتو', flag: '🇦🇫' },
+            'pl': { name: 'Polski', flag: '🇵🇱' },
+            'pa': { name: 'ਪੰਜਾਬੀ', flag: '🇮🇳' },
+            'ro': { name: 'Română', flag: '🇷🇴' },
+            'sm': { name: 'Gagana Samoa', flag: '🇼🇸' },
+            'gd': { name: 'Gàidhlig', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
+            'sr': { name: 'Српски', flag: '🇷🇸' },
+            'st': { name: 'Sesotho', flag: '🇱🇸' },
+            'sn': { name: 'Shona', flag: '🇿🇼' },
+            'sd': { name: 'سنڌي', flag: '🇵🇰' },
+            'si': { name: 'සිංහල', flag: '🇱🇰' },
+            'sk': { name: 'Slovenčina', flag: '🇸🇰' },
+            'sl': { name: 'Slovenščina', flag: '🇸🇮' },
+            'so': { name: 'Soomaali', flag: '🇸🇴' },
+            'su': { name: 'Basa Sunda', flag: '🇮🇩' },
+            'sw': { name: 'Kiswahili', flag: '🇹🇿' },
+            'sv': { name: 'Svenska', flag: '🇸🇪' },
+            'tg': { name: 'Тоҷикӣ', flag: '🇹🇯' },
+            'ta': { name: 'தமிழ்', flag: '🇮🇳' },
+            'tt': { name: 'Татарча', flag: '🇷🇺' },
+            'te': { name: 'తెలుగు', flag: '🇮🇳' },
+            'th': { name: 'ไทย', flag: '🇹🇭' },
+            'tr': { name: 'Türkçe', flag: '🇹🇷' },
+            'tk': { name: 'Türkmençe', flag: '🇹🇲' },
+            'uk': { name: 'Українська', flag: '🇺🇦' },
+            'ur': { name: 'اردو', flag: '🇵🇰' },
+            'ug': { name: 'ئۇيغۇرچە', flag: '🇨🇳' },
+            'uz': { name: 'Oʻzbekcha', flag: '🇺🇿' },
+            'vi': { name: 'Tiếng Việt', flag: '🇻🇳' },
+            'cy': { name: 'Cymraeg', flag: '🏴󠁧󠁢󠁷󠁬󠁳󠁿' },
+            'xh': { name: 'isiXhosa', flag: '🇿🇦' },
+            'yi': { name: 'ייִדיש', flag: '🏴' },
+            'yo': { name: 'Yorùbá', flag: '🇳🇬' },
+            'zu': { name: 'isiZulu', flag: '🇿🇦' }
+        };
+
+        // Translation System with Internet Connectivity
+        const translations = {
+            fa: {
+                app_name: "LifeOS",
+                app_subtitle: "سیستم عامل زندگی هوشمند",
+                nav_home: "خانه",
+                nav_tasks: "وظایف",
+                nav_mood: "احساسات",
+                nav_goals: "اهداف",
+                nav_calm: "آرامش",
+                nav_pomodoro: "تایمر",
+                nav_tribe: "قبیله",
+                nav_chat: "چت‌بات",
+                nav_settings: "تنظیمات",
+                welcome_title: "سلام! به LifeOS خوش آمدید",
+                motivational_quote: "هر روز فرصت جدیدی برای شروع دوباره است! 💪",
+                daily_card: "کارت روز",
+                inspiration_feed: "🌟 فید الهام‌بخش",
+                stats_tasks: "وظایف",
+                stats_mood: "حالت امروز",
+                stats_goals: "اهداف",
+                stats_productivity: "بهره‌وری",
+                quick_actions: "🚀 دسترسی سریع",
+                tasks_title: "📝 مدیریت وظایف",
+                filter_all: "همه",
+                filter_pending: "در انتظار",
+                filter_completed: "تکمیل شده",
+                filter_high: "اولویت بالا",
+                task_placeholder: "وظیفه جدید اضافه کنید...",
+                priority_low: "کم",
+                priority_medium: "متوسط",
+                priority_high: "بالا",
+                add_button: "اضافه کردن",
+                mood_title: "😊 احساسات و ژورنال",
+                how_feeling: "امروز چطوری احساس می‌کنی؟",
+                daily_journal: "یادداشت روزانه",
+                journal_placeholder: "امروز چه اتفاقی افتاد؟ احساساتت رو بنویس...",
+                save_journal: "ذخیره یادداشت",
+                mood_chart: "نمودار احساسات هفتگی",
+                journal_history: "تاریخچه یادداشت‌ها",
+                goals_title: "🎯 هدف‌گذاری و انگیزه",
+                goal_title_placeholder: "عنوان هدف...",
+                goal_description_placeholder: "توضیحات هدف...",
+                goal_short: "کوتاه‌مدت",
+                goal_long: "بلندمدت",
+                add_goal: "اضافه کردن هدف",
+                calm_title: "🧘 مرکز آرامش",
+                breathing_exercise: "تمرین تنفس",
+                breathe: "نفس بکش",
+                start_breathing: "شروع تمرین",
+                nature_sounds: "صداهای طبیعت",
+                stop_sounds: "توقف صدا",
+                meditation: "مدیتیشن هدایت‌شده",
+                stop_meditation: "توقف مدیتیشن",
+                pomodoro_title: "⏰ تایمر تمرکز",
+                start_timer: "شروع",
+                pause_timer: "توقف",
+                reset_timer: "ریست",
+                work_time: "زمان کار (دقیقه)",
+                short_break: "استراحت کوتاه (دقیقه)",
+                long_break: "استراحت طولانی (دقیقه)",
+                completed_sessions: "جلسات تکمیل شده",
+                total_focus_time: "کل زمان تمرکز (دقیقه)",
+                current_streak: "رکورد فعلی",
+                tribe_title: "👥 قبیله من",
+                tribe_members: "اعضای قبیله",
+                online_members: "آنلاین",
+                tribe_level: "سطح قبیله",
+                tribe_code_placeholder: "کد قبیله را وارد کنید...",
+                join_tribe: "پیوستن",
+                create_tribe: "ایجاد قبیله",
+                tribe_members_list: "اعضای قبیله",
+                tribe_chat: "چت قبیله",
+                tribe_message_placeholder: "پیام خود را بنویسید...",
+                send_message: "ارسال",
+                chat_title: "🤖 دستیار هوشمند",
+                tone_friendly: "دوستانه",
+                tone_formal: "رسمی",
+                tone_funny: "شوخ",
+                tone_calm: "آرام",
+                clear_chat: "پاک کردن چت",
+                chat_placeholder: "پیام خود را بنویسید...",
+                send_button: "ارسال",
+                quick_questions: "سوالات سریع:",
+                welcome_to_lifeos: "به LifeOS خوش آمدید!",
+                registration_subtitle: "برای شروع، لطفاً اطلاعات خود را وارد کنید",
+                total_users: "تعداد کاربران عضو:",
+                users_joined: "نفر! 🎉",
+                profile_picture_hint: "روی تصویر کلیک کنید تا عکس پروفایل انتخاب کنید",
+                name_placeholder: "نام شما...",
+                email_placeholder: "ایمیل (اختیاری)...",
+                select_goal: "هدف اصلی شما چیست؟",
+                goal_productivity: "افزایش بهره‌وری",
+                goal_habits: "ایجاد عادت‌های مثبت",
+                goal_organization: "سازماندهی زندگی",
+                goal_learning: "یادگیری و مطالعه",
+                goal_health: "سلامت و تناسب اندام",
+                assistant_tone: "لحن دستیار هوشمند:",
+                start_button: "🚀 شروع کنید",
+                settings_title: "⚙️ تنظیمات",
+                user_profile: "👤 پروفایل کاربری",
+                name_label: "نام:",
+                email_label: "ایمیل:",
+                goal_label: "هدف:",
+                level_label: "سطح:",
+                edit_profile: "✏️ ویرایش پروفایل",
+                language_setting: "زبان برنامه",
+                language_description: "انتخاب زبان رابط کاربری",
+                show_all_languages: "نمایش همه زبان‌ها",
+                theme_settings: "تنظیمات ظاهری",
+                dark_theme: "تم تاریک",
+                glass_effect: "افکت شیشه‌ای",
+                notifications: "اعلان‌ها",
+                task_notifications: "اعلان وظایف",
+                pomodoro_notifications: "اعلان پومودورو",
+                motivational_notifications: "پیام‌های انگیزشی",
+                export_data: "📤 خروجی داده‌ها",
+                import_data: "📥 ورودی داده‌ها",
+                sync_cloud: "☁️ همگام‌سازی ابری",
+                clear_data: "🗑️ پاک کردن همه",
+                install_app_title: "نصب LifeOS",
+                install_app_desc: "برای دسترسی آسان‌تر نصب کنید",
+                later: "بعداً",
+                install: "نصب"
+            },
+            en: {
+                app_name: "LifeOS",
+                app_subtitle: "Smart Life Operating System",
+                nav_home: "Home",
+                nav_tasks: "Tasks",
+                nav_mood: "Mood",
+                nav_goals: "Goals",
+                nav_calm: "Calm",
+                nav_pomodoro: "Timer",
+                nav_tribe: "Tribe",
+                nav_chat: "Chat",
+                nav_settings: "Settings",
+                welcome_title: "Hello! Welcome to LifeOS",
+                motivational_quote: "Every day is a new opportunity to start fresh! 💪",
+                daily_card: "Daily Card",
+                inspiration_feed: "🌟 Inspiration Feed",
+                stats_tasks: "Tasks",
+                stats_mood: "Today's Mood",
+                stats_goals: "Goals",
+                stats_productivity: "Productivity",
+                quick_actions: "🚀 Quick Actions",
+                tasks_title: "📝 Task Management",
+                filter_all: "All",
+                filter_pending: "Pending",
+                filter_completed: "Completed",
+                filter_high: "High Priority",
+                task_placeholder: "Add new task...",
+                priority_low: "Low",
+                priority_medium: "Medium",
+                priority_high: "High",
+                add_button: "Add",
+                mood_title: "😊 Mood & Journal",
+                how_feeling: "How are you feeling today?",
+                daily_journal: "Daily Journal",
+                journal_placeholder: "What happened today? Write your feelings...",
+                save_journal: "Save Journal",
+                mood_chart: "Weekly Mood Chart",
+                journal_history: "Journal History",
+                goals_title: "🎯 Goals & Motivation",
+                goal_title_placeholder: "Goal title...",
+                goal_description_placeholder: "Goal description...",
+                goal_short: "Short-term",
+                goal_long: "Long-term",
+                add_goal: "Add Goal",
+                calm_title: "🧘 Calm Center",
+                breathing_exercise: "Breathing Exercise",
+                breathe: "Breathe",
+                start_breathing: "Start Exercise",
+                nature_sounds: "Nature Sounds",
+                stop_sounds: "Stop Sounds",
+                meditation: "Guided Meditation",
+                stop_meditation: "Stop Meditation",
+                pomodoro_title: "⏰ Focus Timer",
+                start_timer: "Start",
+                pause_timer: "Pause",
+                reset_timer: "Reset",
+                work_time: "Work Time (minutes)",
+                short_break: "Short Break (minutes)",
+                long_break: "Long Break (minutes)",
+                completed_sessions: "Completed Sessions",
+                total_focus_time: "Total Focus Time (minutes)",
+                current_streak: "Current Streak",
+                tribe_title: "👥 My Tribe",
+                tribe_members: "Tribe Members",
+                online_members: "Online",
+                tribe_level: "Tribe Level",
+                tribe_code_placeholder: "Enter tribe code...",
+                join_tribe: "Join",
+                create_tribe: "Create Tribe",
+                tribe_members_list: "Tribe Members",
+                tribe_chat: "Tribe Chat",
+                tribe_message_placeholder: "Type your message...",
+                send_message: "Send",
+                chat_title: "🤖 AI Assistant",
+                tone_friendly: "Friendly",
+                tone_formal: "Formal",
+                tone_funny: "Funny",
+                tone_calm: "Calm",
+                clear_chat: "Clear Chat",
+                chat_placeholder: "Type your message...",
+                send_button: "Send",
+                quick_questions: "Quick Questions:",
+                welcome_to_lifeos: "Welcome to LifeOS!",
+                registration_subtitle: "To get started, please enter your information",
+                total_users: "Total registered users:",
+                users_joined: "people! 🎉",
+                profile_picture_hint: "Click on image to select profile picture",
+                name_placeholder: "Your name...",
+                email_placeholder: "Email (optional)...",
+                select_goal: "What is your main goal?",
+                goal_productivity: "Increase Productivity",
+                goal_habits: "Build Positive Habits",
+                goal_organization: "Life Organization",
+                goal_learning: "Learning & Study",
+                goal_health: "Health & Fitness",
+                assistant_tone: "Assistant Tone:",
+                start_button: "🚀 Get Started",
+                settings_title: "⚙️ Settings",
+                user_profile: "👤 User Profile",
+                name_label: "Name:",
+                email_label: "Email:",
+                goal_label: "Goal:",
+                level_label: "Level:",
+                edit_profile: "✏️ Edit Profile",
+                language_setting: "App Language",
+                language_description: "Choose interface language",
+                show_all_languages: "Show All Languages",
+                theme_settings: "Appearance Settings",
+                dark_theme: "Dark Theme",
+                glass_effect: "Glass Effect",
+                notifications: "Notifications",
+                task_notifications: "Task Notifications",
+                pomodoro_notifications: "Pomodoro Notifications",
+                motivational_notifications: "Motivational Messages",
+                export_data: "📤 Export Data",
+                import_data: "📥 Import Data",
+                sync_cloud: "☁️ Cloud Sync",
+                clear_data: "🗑️ Clear All",
+                install_app_title: "Install LifeOS",
+                install_app_desc: "Install for easier access",
+                later: "Later",
+                install: "Install"
+            }
+        };
+
+        // Internet Translation Service
+        async function translateText(text, targetLang) {
+            try {
+                // Using Google Translate API (you would need to replace with your API key)
+                const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${targetLang}`);
+                const data = await response.json();
+                return data.responseData.translatedText || text;
+            } catch (error) {
+                console.log('Translation service unavailable, using fallback');
+                return text;
+            }
+        }
+
+        // Language System
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('lifeos_language', lang);
+            
+            // Update HTML attributes
+            document.documentElement.lang = lang;
+            document.documentElement.dir = ['fa', 'ar', 'he', 'ur'].includes(lang) ? 'rtl' : 'ltr';
+            
+            // Update language selector
+            const langInfo = worldLanguages[lang];
+            if (langInfo) {
+                document.getElementById('currentLanguageFlag').textContent = langInfo.flag;
+                document.getElementById('currentLanguageName').textContent = langInfo.name;
+            }
+            
+            // Translate all elements
+            translatePage();
+            updatePlaceholders();
+            
+            // Re-render dynamic content with new language
+            if (lifeOS) {
+                lifeOS.renderTasks();
+                lifeOS.renderMoodHistory();
+                lifeOS.renderGoals();
+                lifeOS.renderChat();
+                lifeOS.displayCurrentDate();
+                lifeOS.updateStats();
+            }
+        }
+
+        function translatePage() {
+            document.querySelectorAll('[data-translate]').forEach(async element => {
+                const key = element.getAttribute('data-translate');
+                let translatedText = translations[currentLanguage]?.[key];
+                
+                if (!translatedText && currentLanguage !== 'en') {
+                    // Try to get translation from internet service
+                    const englishText = translations['en'][key];
+                    if (englishText) {
+                        translatedText = await translateText(englishText, currentLanguage);
+                    }
+                }
+                
+                if (translatedText) {
+                    element.textContent = translatedText;
+                }
+            });
+        }
+
+        function updatePlaceholders() {
+            document.querySelectorAll('[data-translate-placeholder]').forEach(async element => {
+                const key = element.getAttribute('data-translate-placeholder');
+                let translatedText = translations[currentLanguage]?.[key];
+                
+                if (!translatedText && currentLanguage !== 'en') {
+                    const englishText = translations['en'][key];
+                    if (englishText) {
+                        translatedText = await translateText(englishText, currentLanguage);
+                    }
+                }
+                
+                if (translatedText) {
+                    element.placeholder = translatedText;
+                }
+            });
+        }
+
+        function toggleLanguageSelector() {
+            const selector = document.getElementById('languageSelector');
+            selector.classList.toggle('hidden');
+            
+            if (!selector.classList.contains('hidden')) {
+                populateLanguageSelector();
+            }
+        }
+
+        function populateLanguageSelector() {
+            const selector = document.getElementById('languageSelector');
+            selector.innerHTML = '';
+            
+            Object.entries(worldLanguages).forEach(([code, info]) => {
+                const option = document.createElement('div');
+                option.className = `language-option ${code === currentLanguage ? 'active' : ''}`;
+                option.innerHTML = `
+                    <span>${info.flag}</span>
+                    <span>${info.name}</span>
+                `;
+                option.onclick = () => {
+                    switchLanguage(code);
+                    toggleLanguageSelector();
+                };
+                selector.appendChild(option);
+            });
+        }
+
+        function showAllLanguages() {
+            toggleLanguageSelector();
+        }
+
+        // Profile Picture Handling
+        function handleProfilePicture(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = e.target.result;
+                    document.getElementById('profilePreview').src = imageData;
+                    localStorage.setItem('temp_profile_picture', imageData);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateProfilePicture(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = e.target.result;
+                    
+                    if (lifeOS.userProfile) {
+                        lifeOS.userProfile.profilePicture = imageData;
+                        localStorage.setItem('lifeos_user', JSON.stringify(lifeOS.userProfile));
+                        document.getElementById('settingsProfilePicture').src = imageData;
+                        lifeOS.showNotification('عکس پروفایل به‌روزرسانی شد! ✅');
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Update time display
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString(currentLanguage === 'fa' ? 'fa-IR' : 'en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            const timeElement = document.getElementById('currentTime');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+
+        // PWA Functions
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            if (!installPromptShown) {
+                setTimeout(() => {
+                    document.getElementById('installPrompt').style.display = 'block';
+                }, 3000);
+            }
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                    dismissInstallPrompt();
+                });
+            }
+        }
+
+        function dismissInstallPrompt() {
+            document.getElementById('installPrompt').style.display = 'none';
+            localStorage.setItem('lifeos_install_prompt_shown', 'true');
+            installPromptShown = true;
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                    const CACHE_NAME = 'lifeos-v4';
+                    const urlsToCache = [
+                        '/',
+                        '/index.html',
+                        'https://cdn.tailwindcss.com',
+                        'https://cdn.jsdelivr.net/npm/chart.js',
+                        'https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js'
+                    ];
+
+                    self.addEventListener('install', (event) => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME)
+                                .then((cache) => cache.addAll(urlsToCache))
+                        );
+                    });
+
+                    self.addEventListener('fetch', (event) => {
+                        event.respondWith(
+                            caches.match(event.request)
+                                .then((response) => {
+                                    if (response) {
+                                        return response;
+                                    }
+                                    return fetch(event.request);
+                                })
+                        );
+                    });
+                `;
+                
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl)
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // LifeOS - Complete App System
+        class LifeOS {
+            constructor() {
+                this.tasks = JSON.parse(localStorage.getItem('lifeos_tasks')) || [];
+                this.moods = JSON.parse(localStorage.getItem('lifeos_moods')) || [];
+                this.journals = JSON.parse(localStorage.getItem('lifeos_journals')) || [];
+                this.goals = JSON.parse(localStorage.getItem('lifeos_goals')) || [];
+                this.chatHistory = JSON.parse(localStorage.getItem('lifeos_chat')) || [];
+                this.userProfile = JSON.parse(localStorage.getItem('lifeos_user')) || null;
+                this.settings = JSON.parse(localStorage.getItem('lifeos_settings')) || {
+                    darkTheme: true,
+                    glassEffect: true,
+                    notifications: true,
+                    language: currentLanguage,
+                    assistantTone: 'friendly'
+                };
+                this.pomodoroStats = JSON.parse(localStorage.getItem('lifeos_pomodoro')) || {
+                    completed: 0,
+                    totalFocusTime: 0,
+                    currentStreak: 0
+                };
+                this.tribeData = JSON.parse(localStorage.getItem('lifeos_tribe')) || {
+                    members: [],
+                    messages: [],
+                    code: null,
+                    level: 1
+                };
+                
+                this.currentFilter = 'all';
+                this.currentMood = null;
+                this.pomodoroTimer = null;
+                this.pomodoroState = 'stopped'; // stopped, running, paused
+                this.pomodoroTimeLeft = 25 * 60; // 25 minutes in seconds
+                this.breathingTimer = null;
+                this.meditationTimer = null;
+                this.moodChart = null;
+                
+                this.init();
+            }
+
+            init() {
+                switchLanguage(this.settings.language || currentLanguage);
+                
+                if (!this.userProfile) {
+                    this.showRegistration();
+                    this.updateTotalUsers();
+                    return;
+                }
+                
+                this.showNormalApp();
+                this.displayCurrentDate();
+                this.updateStats();
+                this.renderTasks();
+                this.renderMoodHistory();
+                this.renderGoals();
+                this.renderChat();
+                this.setupEventListeners();
+                this.updateUserProfile();
+                this.addWelcomeMessage();
+                this.loadInfiniteFeed();
+                this.initializeMoodChart();
+                this.setupSortableTasks();
+                this.updatePomodoroStats();
+                this.renderTribeMembers();
+                this.renderTribeChat();
+                
+                updateTime();
+                setInterval(updateTime, 1000);
+                
+                // Setup notifications
+                this.setupNotifications();
+                
+                // Load daily content
+                this.loadDailyContent();
+            }
+
+            updateTotalUsers() {
+                // Simulate growing user base
+                const baseUsers = 12847;
+                const randomGrowth = Math.floor(Math.random() * 100);
+                const totalUsers = baseUsers + randomGrowth;
+                
+                const element = document.getElementById('totalUsers');
+                if (element) {
+                    element.textContent = totalUsers.toLocaleString();
+                }
+            }
+
+            displayCurrentDate() {
+                const now = new Date();
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                };
+                const locale = currentLanguage === 'fa' ? 'fa-IR' : 'en-US';
+                const dateString = now.toLocaleDateString(locale, options);
+                const dateElement = document.getElementById('currentDate');
+                if (dateElement) {
+                    dateElement.textContent = dateString;
+                }
+                
+                // Update welcome message with user name
+                if (this.userProfile) {
+                    const welcomeMessage = document.getElementById('welcomeMessage');
+                    if (welcomeMessage) {
+                        const greetings = currentLanguage === 'fa' ? [
+                            `سلام ${this.userProfile.name} عزیز! 🌟`,
+                            `${this.userProfile.name} جان، روز خوبی داشته باش! ☀️`,
+                            `سلام ${this.userProfile.name}! آماده‌ای برای یک روز فوق‌العاده؟ 🚀`
+                        ] : [
+                            `Hello ${this.userProfile.name}! 🌟`,
+                            `Good day, ${this.userProfile.name}! ☀️`,
+                            `Hi ${this.userProfile.name}! Ready for an amazing day? 🚀`
+                        ];
+                        welcomeMessage.textContent = greetings[Math.floor(Math.random() * greetings.length)];
+                    }
+                }
+            }
+
+            loadDailyContent() {
+                const dailyQuotes = currentLanguage === 'fa' ? [
+                    "موفقیت مجموع تلاش‌های کوچک روزانه است.",
+                    "هر روز فرصت جدیدی برای شروع دوباره است.",
+                    "تغییر از خودت شروع می‌شود.",
+                    "آینده متعلق به کسانی است که به رویاهایشان ایمان دارند.",
+                    "بزرگترین شکست، تلاش نکردن است."
+                ] : [
+                    "Success is the sum of small efforts repeated day in and day out.",
+                    "Every day is a new opportunity to start fresh.",
+                    "Change begins with you.",
+                    "The future belongs to those who believe in their dreams.",
+                    "The greatest failure is not trying at all."
+                ];
+
+                const dailyTasks = currentLanguage === 'fa' ? [
+                    "امروز 10 دقیقه مدیتیشن کن",
+                    "یک کتاب جدید شروع کن",
+                    "با یک دوست تماس بگیر",
+                    "30 دقیقه پیاده‌روی کن",
+                    "یک مهارت جدید یاد بگیر"
+                ] : [
+                    "Meditate for 10 minutes today",
+                    "Start reading a new book",
+                    "Call a friend",
+                    "Take a 30-minute walk",
+                    "Learn a new skill"
+                ];
+
+                document.getElementById('dailyQuote').textContent = dailyQuotes[Math.floor(Math.random() * dailyQuotes.length)];
+                document.getElementById('dailyTask').textContent = dailyTasks[Math.floor(Math.random() * dailyTasks.length)];
+            }
+
+            loadInfiniteFeed() {
+                const feed = document.getElementById('inspirationFeed');
+                if (!feed) return;
+
+                const inspirationalContent = currentLanguage === 'fa' ? [
+                    { type: 'quote', content: '💡 "تنها راه انجام کار عالی، عاشق کاری است که انجام می‌دهید." - استیو جابز' },
+                    { type: 'tip', content: '🎯 نکته: هر روز 3 کار مهم انتخاب کن و روی آن‌ها تمرکز کن.' },
+                    { type: 'motivation', content: '🔥 یادت باشه: هر قدم کوچک، تو رو به هدفت نزدیک‌تر می‌کنه!' },
+                    { type: 'quote', content: '🌟 "موفقیت نهایی نیست، شکست کشنده نیست: شجاعت ادامه دادن مهم است." - چرچیل' },
+                    { type: 'tip', content: '⏰ تکنیک پومودورو: 25 دقیقه کار، 5 دقیقه استراحت.' },
+                    { type: 'motivation', content: '💪 امروز بهتر از دیروز باش، فردا بهتر از امروز!' }
+                ] : [
+                    { type: 'quote', content: '💡 "The only way to do great work is to love what you do." - Steve Jobs' },
+                    { type: 'tip', content: '🎯 Tip: Choose 3 important tasks each day and focus on them.' },
+                    { type: 'motivation', content: '🔥 Remember: Every small step brings you closer to your goal!' },
+                    { type: 'quote', content: '🌟 "Success is not final, failure is not fatal: it is the courage to continue that counts." - Churchill' },
+                    { type: 'tip', content: '⏰ Pomodoro Technique: 25 minutes work, 5 minutes break.' },
+                    { type: 'motivation', content: '💪 Be better than yesterday, tomorrow better than today!' }
+                ];
+
+                // Load initial content
+                inspirationalContent.slice(0, 3).forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'scroll-item';
+                    div.textContent = item.content;
+                    feed.appendChild(div);
+                });
+
+                // Infinite scroll
+                let loadedItems = 3;
+                feed.addEventListener('scroll', () => {
+                    if (feed.scrollTop + feed.clientHeight >= feed.scrollHeight - 10) {
+                        if (loadedItems < inspirationalContent.length) {
+                            const item = inspirationalContent[loadedItems];
+                            const div = document.createElement('div');
+                            div.className = 'scroll-item';
+                            div.textContent = item.content;
+                            feed.appendChild(div);
+                            loadedItems++;
+                        } else {
+                            // Reload from beginning for infinite effect
+                            loadedItems = 0;
+                        }
+                    }
+                });
+            }
+
+            updateStats() {
+                // Update task stats
+                const completedTasks = this.tasks.filter(t => t.completed).length;
+                const totalTasks = this.tasks.length;
+                const taskProgress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+                
+                document.getElementById('taskCount').textContent = totalTasks;
+                document.getElementById('taskProgress').style.width = taskProgress + '%';
+                
+                // Update mood stats
+                const todayMood = this.getTodayMood();
+                document.getElementById('moodScore').textContent = todayMood ? todayMood.emoji : '😐';
+                document.getElementById('moodProgress').style.width = todayMood ? (todayMood.score * 20) : 50 + '%';
+                
+                // Update goal stats
+                const completedGoals = this.goals.filter(g => g.completed).length;
+                document.getElementById('goalCount').textContent = this.goals.length;
+                document.getElementById('goalProgress').style.width = this.goals.length > 0 ? (completedGoals / this.goals.length) * 100 : 0 + '%';
+                
+                // Update productivity
+                const productivity = Math.round((taskProgress + (todayMood ? todayMood.score * 20 : 50) + (this.goals.length > 0 ? (completedGoals / this.goals.length) * 100 : 0)) / 3);
+                document.getElementById('productivity').textContent = productivity + '%';
+                document.getElementById('productivityProgress').style.width = productivity + '%';
+
+                // Update XP and Level
+                this.updateXPAndLevel();
+            }
+
+            updateXPAndLevel() {
+                let totalXP = 0;
+                
+                // XP from completed tasks
+                totalXP += this.tasks.filter(t => t.completed).length * 10;
+                
+                // XP from journal entries
+                totalXP += this.journals.length * 5;
+                
+                // XP from completed goals
+                totalXP += this.goals.filter(g => g.completed).length * 50;
+                
+                // XP from pomodoro sessions
+                totalXP += this.pomodoroStats.completed * 15;
+                
+                // Calculate level
+                const level = Math.floor(totalXP / 100) + 1;
+                const currentLevelXP = totalXP % 100;
+                
+                // Update display
+                document.getElementById('userXP').textContent = currentLevelXP;
+                document.getElementById('userLevel').textContent = `سطح ${level}`;
+                document.getElementById('xpFill').style.width = currentLevelXP + '%';
+                
+                // Store in user profile
+                if (this.userProfile) {
+                    this.userProfile.level = level;
+                    this.userProfile.xp = totalXP;
+                    localStorage.setItem('lifeos_user', JSON.stringify(this.userProfile));
+                }
+            }
+
+            setupEventListeners() {
+                // Enter key listeners
+                document.getElementById('taskInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.addTask();
+                });
+                
+                document.getElementById('chatInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+
+                document.getElementById('tribeChatInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendTribeMessage();
+                });
+            }
+
+            setupSortableTasks() {
+                const taskList = document.getElementById('taskList');
+                if (taskList) {
+                    new Sortable(taskList, {
+                        animation: 150,
+                        ghostClass: 'dragging',
+                        onEnd: (evt) => {
+                            // Update task order
+                            const movedTask = this.tasks.splice(evt.oldIndex, 1)[0];
+                            this.tasks.splice(evt.newIndex, 0, movedTask);
+                            this.saveTasks();
+                        }
+                    });
+                }
+            }
+
+            setupNotifications() {
+                if ('Notification' in window && Notification.permission === 'default') {
+                    Notification.requestPermission();
+                }
+
+                // Random motivational notifications
+                if (this.settings.notifications) {
+                    setInterval(() => {
+                        this.sendRandomMotivation();
+                    }, 30 * 60 * 1000); // Every 30 minutes
+                }
+            }
+
+            sendRandomMotivation() {
+                const messages = currentLanguage === 'fa' ? [
+                    '💪 وقت یه استراحت کوچیک! نفس عمیق بکش.',
+                    '🎯 یادت باشه هدفت! داری عالی پیش میری.',
+                    '🌟 امروز چه کار خوبی انجام دادی؟',
+                    '💧 یادت باشه آب بخوری!',
+                    '🧘 5 دقیقه مدیتیشن چطوره؟'
+                ] : [
+                    '💪 Time for a small break! Take a deep breath.',
+                    '🎯 Remember your goal! You\'re doing great.',
+                    '🌟 What good thing did you do today?',
+                    '💧 Remember to drink water!',
+                    '🧘 How about 5 minutes of meditation?'
+                ];
+
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                this.showNotification(randomMessage);
+            }
+
+            // Task Management
+            addTask() {
+                const input = document.getElementById('taskInput');
+                const priority = document.getElementById('taskPriority');
+                const deadline = document.getElementById('taskDeadline');
+                const taskText = input.value.trim();
+                
+                if (taskText) {
+                    const task = {
+                        id: Date.now(),
+                        text: taskText,
+                        priority: priority.value,
+                        deadline: deadline.value || null,
+                        completed: false,
+                        createdAt: new Date().toLocaleDateString(currentLanguage === 'fa' ? 'fa-IR' : 'en-US')
+                    };
+                    
+                    this.tasks.unshift(task);
+                    this.saveTasks();
+                    this.renderTasks();
+                    this.updateStats();
+                    input.value = '';
+                    deadline.value = '';
+                    
+                    // Add XP for creating task
+                    this.addXP(5);
+                    
+                    const message = currentLanguage === 'fa' ? 'وظیفه جدید اضافه شد! ✅' : 'New task added! ✅';
+                    this.showNotification(message);
+                }
+            }
+
+            filterTasks(filter) {
+                this.currentFilter = filter;
+                this.renderTasks();
+            }
+
+            renderTasks() {
+                const taskList = document.getElementById('taskList');
+                if (!taskList) return;
+                
+                let filteredTasks = this.tasks;
+                
+                switch(this.currentFilter) {
+                    case 'pending':
+                        filteredTasks = this.tasks.filter(task => !task.completed);
+                        break;
+                    case 'completed':
+                        filteredTasks = this.tasks.filter(task => task.completed);
+                        break;
+                    case 'high':
+                        filteredTasks = this.tasks.filter(task => task.priority === 'high');
+                        break;
+                }
+                
+                if (filteredTasks.length === 0) {
+                    const emptyMessage = currentLanguage === 'fa' ? 
+                        'هنوز وظیفه‌ای نداری!' : 'No tasks yet!';
+                    const emptySubMessage = currentLanguage === 'fa' ? 
+                        'اولین وظیفه‌ات رو اضافه کن' : 'Add your first task';
+                        
+                    taskList.innerHTML = `
+                        <div class="card text-center">
+                            <div class="text-6xl mb-4">📝</div>
+                            <h3 class="text-lg font-bold mb-2">${emptyMessage}</h3>
+                            <p class="text-white-70">${
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96961b31a05daa14',t:'MTc1NDIyNzE2Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
